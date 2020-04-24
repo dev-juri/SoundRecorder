@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Sound Recorder</string>
-    <string name="record_fragment">Record</string>
-    <string name="recordings_fragment">Recordings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="record_state_text1">Tap the microphone to start recording</string>
+    <string name="record_state_text2">Recording</string>
 </resources>
