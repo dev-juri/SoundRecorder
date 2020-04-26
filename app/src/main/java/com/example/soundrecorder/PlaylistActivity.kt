@@ -13,6 +13,6 @@ class PlaylistActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_playlist)
+       setContentView(R.layout.activity_playlist)
     }
 }

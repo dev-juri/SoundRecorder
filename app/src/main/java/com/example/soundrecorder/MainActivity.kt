@@ -82,11 +82,13 @@ class MainActivity : AppCompatActivity() {
             binding.recordStateText.text = startRecording
             toastAnAlert(startRecording)
             binding.stopIconHouse.visibility = View.VISIBLE
+            binding.recordStart.isClickable = false
+            binding.recordStart.isFocusable = false
             binding.playlistBtn.isClickable = false
             binding.playlistBtn.isFocusable = false
         }
 
-        binding.stopRecording.setOnClickListener() {
+        binding.stopRecording.setOnClickListener{
             stopRecording()
             binding.recordCounter.stop()
             binding.recordCounter.base = SystemClock.elapsedRealtime()
@@ -99,20 +101,16 @@ class MainActivity : AppCompatActivity() {
             binding.recordStateText.text = endRecordingStateText
         }
 
-        binding.playlistBtn.setOnClickListener() {
-            playlist()
+        binding.playlistBtn.setOnClickListener{
+            val intent = Intent(applicationContext, PlaylistActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    private fun playlist() {
-        var intent = Intent(applicationContext, PlaylistActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun randomName(): String {
-        var txt_part: String = "Recording"
-        var randomInt: Int = Random.nextInt(1000)
-        fileName = "$txt_part$randomInt"
+        val txtPart = "Recording"
+        val randomInt: Int = Random.nextInt(1000)
+        fileName = "$txtPart$randomInt"
         return fileName
     }
 
