@@ -4,23 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaylistActivity"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    tools:context=".PlaylistActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+    <!--TODO Remove redundant LinearLayout always exhaust possible setting with ConstraintLayout before nesting views -->
+    <ImageButton
+        android:id="@+id/recorder_activity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:contentDescription="@string/record_button"
         android:background="@color/colorPrimaryDark"
+        android:padding="12dp"
+        android:src="@drawable/ic_mic_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_mic_black_24dp"
-            android:background="@color/colorPrimaryDark"
-            android:id="@+id/recorder_activity"/>
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
