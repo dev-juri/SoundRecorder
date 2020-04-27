@@ -3,20 +3,32 @@ package com.example.soundrecorder
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.playlist_btn
+import kotlinx.android.synthetic.main.activity_main.stop_icon_house
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.io.IOException
 
+private const val LOG_TAG = "AudioRecordTest"
+private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+
 class MainActivity : AppCompatActivity() {
+
+
     private var fileName: String = " "
     private var permissionToRecordAccepted = false
     private var permissions: Array<String> = arrayOf(android.Manifest.permission.RECORD_AUDIO)
-    private var recorder: MediaRecorder? = null
+    private var recorder: MediaRecorder ?= null
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -26,33 +38,14 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionToRecordAccepted = if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
             grantResults[0] == PackageManager.PERMISSION_GRANTED
-        } else {
+        }else{
             false
         }
-        if (!permissionToRecordAccepted) {
-            //TODO Don't just close the app without telling the user why with permission related issues
-            AlertDialog.Builder(this)
-                .setTitle("Permission Required")
-                .setMessage("Please grant ${getString(R.string.app_name)} audio recording permission to be able to use this app.")
-                .setPositiveButton("Okay") { d, _ ->
-                    //TODO Retry permission request if user agrees
-                    ActivityCompat.requestPermissions(
-                        this,
-                        permissions,
-                        REQUEST_RECORD_AUDIO_PERMISSION
-                    )
-                    d.dismiss()
-                }
-                .setNegativeButton("Exit") { d, _ ->
-                    //TODO Exit otherwise
-                    d.dismiss()
-                    finish()
-                }
-        }
+        if(!permissionToRecordAccepted) finish()
     }
 
-    private fun startRecording() {
-        recorder =
+    private fun startRecording(){
+        recorder=
             MediaRecorder().apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
@@ -61,14 +54,14 @@ class MainActivity : AppCompatActivity() {
 
                 try {
                     prepare()
-                } catch (e: IOException) {
+                }catch (e: IOException) {
                     Log.e(LOG_TAG, "prepare() failed")
                 }
                 start()
             }
     }
 
-    private fun stopRecording() {
+    private fun stopRecording(){
         recorder?.apply {
             stop()
             release()
@@ -77,39 +70,54 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO Change file name to be a bit more human readable
-        fileName = "${externalCacheDir?.absolutePath}/audioRecordTest.3gp"
+        fileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
         setContentView(R.layout.activity_main)
-        //TODO Leverage the Kotlin Android extensions since it added by default
-        record_start.setOnClickListener {
-            startRecording()
-            filename.text = fileName
-            record_state_text.text = getString(R.string.recording)
-            stop_recording.visibility = View.VISIBLE
-            record_start.isClickable = false
-            playlist_btn.isClickable = false
+
+        var file_name = findViewById<TextView>(R.id.filename)
+        var record_state = findViewById<TextView>(R.id.record_state_text)
+        var record_start = findViewById<ImageButton>(R.id.record_start)
+        var icon_house = findViewById<LinearLayout>(R.id.stop_icon_house)
+        var playlistbtn = findViewById<ImageButton>(R.id.playlist_btn)
+
+        record_start.apply {
+            setOnClickListener(){
+                startRecording()
+                file_name.text = fileName
+                record_state.text = "Recording..."
+                icon_house.visibility = View.VISIBLE
+                isClickable = false
+                playlistbtn.isClickable = false
+
+            }
 
         }
-        stop_recording.setOnClickListener {
-            stopRecording()
-            stop_recording.visibility = View.GONE
-            record_start.isClickable = true
-            playlist_btn.isClickable = true
-            record_state_text.text = getString(R.string.tap_to_record)
+        stop_recording.apply {
+            setOnClickListener(){
+                stopRecording()
+                icon_house.visibility = View.INVISIBLE
+                record_start.isClickable = true
+                playlistbtn.isClickable = true
+                record_state.text = "Tap the microphone to start recording"
+
+            }
 
         }
 
-        playlist_btn.setOnClickListener {
-            startActivity(Intent(this, PlaylistActivity::class.java))
+        playlist_btn.apply{
+            setOnClickListener(){
+            playlist()
+            }
         }
     }
 
-    //TODO Always use companion object to hold your constant values in Kotlin classes
-    companion object {
-        private const val LOG_TAG = "AudioRecordTest"
-        private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+    private fun playlist(){
+        var intent = Intent(applicationContext, PlaylistActivity::class.java)
+        startActivity(intent)
     }
+
+
 }

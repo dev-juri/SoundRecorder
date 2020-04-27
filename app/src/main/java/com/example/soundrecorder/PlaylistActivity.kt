@@ -11,10 +11,11 @@ class PlaylistActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist)
 
-        //TODO Remove unneeded call to apply when only one method/attribute is called/altered
-        recorder_activity.setOnClickListener{
-                //TODO avoid calling applicationContext unless you need to
-                startActivity(Intent(this, MainActivity::class.java))
+        recorder_activity.apply {
+            setOnClickListener(){
+                var intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
             }
+        }
     }
 }
