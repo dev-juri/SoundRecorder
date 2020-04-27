@@ -9,14 +9,14 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.example.soundrecorder.databinding.ActivityMainBinding
 import java.io.IOException
 import kotlin.random.Random
 
-private const val LOG_TAG = "AudioRecordTest"
-private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +37,27 @@ class MainActivity : AppCompatActivity() {
         } else {
             false
         }
-        if (!permissionToRecordAccepted) finish()
+        if (!permissionToRecordAccepted) {
+            //TODO Don't just close the app without telling the user why with permission related issues
+            AlertDialog.Builder(this)
+                .setTitle("Permission Required")
+                .setMessage("Please grant ${getString(R.string.app_name)} audio recording permission to be able to use this app.")
+                .setPositiveButton("Okay") { d, _ ->
+                    //TODO Retry permission request if user agrees
+                    ActivityCompat.requestPermissions(
+                        this,
+                        permissions,
+                        REQUEST_RECORD_AUDIO_PERMISSION
+                    )
+                    d.dismiss()
+                }
+                .setNegativeButton("Exit") { d, _ ->
+                    //TODO Exit otherwise
+                    d.dismiss()
+                    finish()
+                }
+        }
+
     }
 
     private fun startRecording() {
@@ -71,8 +91,8 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val endRecordingStateText = "Tap the microphone to start recording"
-        val startRecording = "Recording..."
+        val endRecordingStateText = getString(R.string.tap_to_record)
+        val startRecording = getString(R.string.recording)
 
         binding.recordStart.setOnClickListener {
             fileName = "${externalCacheDir?.absolutePath}/${randomName()}.3gp"
@@ -81,28 +101,24 @@ class MainActivity : AppCompatActivity() {
             binding.recordCounter.start()
             binding.recordStateText.text = startRecording
             toastAnAlert(startRecording)
-            binding.stopIconHouse.visibility = View.VISIBLE
             binding.recordStart.isClickable = false
-            binding.recordStart.isFocusable = false
             binding.playlistBtn.isClickable = false
-            binding.playlistBtn.isFocusable = false
+            binding.stopRecording.visibility = View.VISIBLE
         }
 
-        binding.stopRecording.setOnClickListener{
+        binding.stopRecording.setOnClickListener {
             stopRecording()
             binding.recordCounter.stop()
             binding.recordCounter.base = SystemClock.elapsedRealtime()
-            binding.stopIconHouse.visibility = View.GONE
             toastAnAlert("New Recording: ${randomName()}.3gp saved")
             binding.recordStart.isClickable = true
-            binding.recordStart.isFocusable = true
-            binding.playlistBtn.isFocusable = true
             binding.playlistBtn.isClickable = true
+            binding.stopRecording.visibility = View.GONE
             binding.recordStateText.text = endRecordingStateText
         }
 
-        binding.playlistBtn.setOnClickListener{
-            val intent = Intent(applicationContext, PlaylistActivity::class.java)
+        binding.playlistBtn.setOnClickListener {
+            val intent = Intent(this, PlaylistActivity::class.java)
             startActivity(intent)
         }
     }
@@ -115,10 +131,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toastAnAlert(text: String) {
-        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(this, text, Toast.LENGTH_SHORT)
 
         return toast.show()
     }
 
+    companion object {
+        private const val LOG_TAG = "AudioRecordTest"
+        private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+    }
 
 }
+

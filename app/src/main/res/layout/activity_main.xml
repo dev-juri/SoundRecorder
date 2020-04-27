@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,81 +13,87 @@
             android:id="@+id/record_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
+            android:text="@string/default_time"
             android:textColor="@color/textWhite"
             android:textSize="50sp"
+            app:layout_constraintBottom_toTopOf="@+id/record_state_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/record_state_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/record_state_text1"
+            android:text="@string/tap_to_record"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/textWhite"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/filename"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/record_counter" />
 
-
-        <LinearLayout
-            android:id="@+id/stop_icon_house"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimaryDark"
-            android:orientation="horizontal"
-            android:visibility="invisible"
-            android:weightSum="100"
-            app:layout_constraintBottom_toTopOf="@+id/record_icon_house"
+        <TextView
+            android:id="@+id/filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/textWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/stop_recording"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/record_state_text"
+            tools:text="File name" />
 
-            <ImageButton
-                android:id="@+id/stop_recording"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryDark"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_stop_black_24dp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/record_icon_house"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+        <ImageButton
+            android:id="@+id/stop_recording"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:contentDescription="@string/stop_recording_button"
             android:background="@color/colorPrimaryDark"
-            android:orientation="horizontal"
+            android:padding="12dp"
+            android:src="@drawable/ic_stop_black_24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/record_start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/record_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:contentDescription="@string/start_recording_button"
+            android:background="@color/colorPrimaryDark"
+            android:padding="8dp"
+            android:src="@drawable/ic_mic_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/playlist_btn"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/playlist_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:contentDescription="@string/playlist_button"
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/ic_playlist_play_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/record_start"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageButton
-                android:id="@+id/record_start"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:background="@color/colorPrimaryDark"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_mic_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/playlist_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:background="@color/colorPrimaryDark"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_playlist_play_black_24dp" />
-
-        </LinearLayout>
+            app:layout_constraintStart_toEndOf="@+id/record_start"
+            app:layout_constraintTop_toTopOf="@+id/record_start" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
