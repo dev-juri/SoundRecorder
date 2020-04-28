@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.example.soundrecorder.databinding.ActivityMainBinding
+import java.io.File
 import java.io.IOException
 import kotlin.random.Random
 
@@ -38,12 +40,10 @@ class MainActivity : AppCompatActivity() {
             false
         }
         if (!permissionToRecordAccepted) {
-            //TODO Don't just close the app without telling the user why with permission related issues
             AlertDialog.Builder(this)
                 .setTitle("Permission Required")
                 .setMessage("Please grant ${getString(R.string.app_name)} audio recording permission to be able to use this app.")
                 .setPositiveButton("Okay") { d, _ ->
-                    //TODO Retry permission request if user agrees
                     ActivityCompat.requestPermissions(
                         this,
                         permissions,
@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
                     d.dismiss()
                 }
                 .setNegativeButton("Exit") { d, _ ->
-                    //TODO Exit otherwise
                     d.dismiss()
                     finish()
                 }
@@ -91,11 +90,13 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        Log.i("PATH", "${fileDir()} returned")
+
         val endRecordingStateText = getString(R.string.tap_to_record)
         val startRecording = getString(R.string.recording)
 
         binding.recordStart.setOnClickListener {
-            fileName = "${externalCacheDir?.absolutePath}/${randomName()}.3gp"
+            fileName = "${fileDir()}/${randomName()}.3gp"
             binding.recordCounter.base = SystemClock.elapsedRealtime()
             startRecording()
             binding.recordCounter.start()
@@ -134,6 +135,17 @@ class MainActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, text, Toast.LENGTH_SHORT)
 
         return toast.show()
+    }
+
+    private fun fileDir(): File{
+        val folderPath = "${Environment.getExternalStorageDirectory().absolutePath}/Recordings"
+        var folder = File(folderPath)
+        if(!folder.exists()){
+            folder = File(folderPath)
+            folder.mkdir()
+        } else folder
+
+        return folder
     }
 
     companion object {

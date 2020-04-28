@@ -19,7 +19,6 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         audioSize.text = "${list.size}"
         audioDate.text = list.savedDate
         playBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp)
-
     }
 
 }
