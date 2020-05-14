@@ -1,12 +1,12 @@
-package com.example.soundrecorder
+package com.example.soundrecorder.playlistActivity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.soundrecorder.model.Audio
+import com.example.soundrecorder.R
+import com.example.soundrecorder.database.Audio
 
-class AudioRecyclerAdapter: RecyclerView.Adapter<PlaylistViewHolder>(){
-    private var items: List<Audio> = ArrayList()
+class AudioRecyclerAdapter(private val items: List<Audio>): RecyclerView.Adapter<PlaylistViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         return PlaylistViewHolder(
@@ -20,9 +20,6 @@ class AudioRecyclerAdapter: RecyclerView.Adapter<PlaylistViewHolder>(){
 
     override fun getItemCount(): Int {
         return items.size
-    }
-    fun submitList(audioList: List<Audio>){
-        items = audioList
     }
 
 }

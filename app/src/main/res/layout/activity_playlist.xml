@@ -6,14 +6,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        tools:context=".PlaylistActivity">
+        tools:context=".playlistActivity.PlaylistActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/media_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
         <TextView
+            android:id="@+id/no_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
