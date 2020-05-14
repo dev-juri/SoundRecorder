@@ -6,16 +6,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
-        tools:context=".PlaylistActivity">
+        tools:context=".playlistActivity.PlaylistActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/media_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             />
 
         <TextView
